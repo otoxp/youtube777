@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
-<!-- saved from url=(0046)file:///C:/Users/Amorim/Desktop/SP-CPV-01.html -->
-<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="pt-BR">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roteiro de Viagem Fran Amorim</title>
     <style>
@@ -29,6 +28,10 @@
         }
         a:hover {
             text-decoration: underline;
+        }
+        #totals {
+            margin-top: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -131,4 +134,49 @@
             </tr>
         </tbody>
     </table>
-</body></html>
+
+    <div id="totals">
+        <p>Total de Distância: <span id="totalDistancia">0 km</span></p>
+        <p>Total de Tempo: <span id="totalTempo">0h 0min</span></p>
+    </div>
+
+    <script>
+        function converterTempoParaMinutos(tempo) {
+            const regex = /(\d+h)?\s*(\d+min)?/;
+            const match = tempo.match(regex);
+            let horas = 0;
+            let minutos = 0;
+            if (match) {
+                if (match[1]) {
+                    horas = parseInt(match[1].replace('h', ''));
+                }
+                if (match[2]) {
+                    minutos = parseInt(match[2].replace('min', ''));
+                }
+            }
+            return horas * 60 + minutos; // Retorna o tempo total em minutos
+        }
+
+        function somarDistanciaETempo() {
+            const linhas = document.querySelectorAll("tbody tr");
+            let totalDistancia = 0;
+            let totalTempoMinutos = 0;
+
+            linhas.forEach((linha) => {
+                const distancia = linha.cells[2].textContent.replace(' km', '');
+                totalDistancia += parseInt(distancia);
+                const tempo = linha.cells[3].textContent;
+                totalTempoMinutos += converterTempoParaMinutos(tempo);
+            });
+
+            const horasTotais = Math.floor(totalTempoMinutos / 60);
+            const minutosTotais = totalTempoMinutos % 60;
+
+            document.getElementById("totalDistancia").textContent = totalDistancia + " km";
+            document.getElementById("totalTempo").textContent = `${horasTotais}h ${minutosTotais}min`;
+        }
+
+        somarDistanciaETempo(); // Chama a função ao carregar a página
+    </script>
+</body>
+</html>
