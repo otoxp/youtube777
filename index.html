@@ -181,9 +181,10 @@
           if (tipo === 'video') {
             botoesDownload = `
               <div class="downloads">
-                <a href="/download?url=https://www.youtube.com/watch?v=${id}&format=mp4vtt" target="_blank">MP4</a>
-                <a href="/download?url=https://www.youtube.com/watch?v=${id}&format=mp3" target="_blank">MP3</a>
-                <a href="/download?url=https://www.youtube.com/watch?v=${id}&format=vtt" target="_blank">Legenda (VTT)</a>
+                <a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp4vtt" target="_blank">MP4</a>
+                <a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp3" target="_blank">MP3</a>
+                <a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=vtt" target="_blank">Legenda (VTT)</a>
+
               </div>
             `;
           }
@@ -231,3 +232,7 @@
   </script>
 </body>
 </html>
+
+<a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp4vtt" target="_blank">MP4</a>
+<a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp3" target="_blank">MP3</a>
+<a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=vtt" target="_blank">Legenda (VTT)</a>
