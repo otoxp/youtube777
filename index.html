@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Buscador YouTube</title>
   <style>
     body {
@@ -61,7 +61,6 @@
       background: #1c1c1c;
       padding: 10px;
       border-radius: 10px;
-      transition: background 0.3s;
     }
     .light-mode .video {
       background: #fff;
@@ -97,26 +96,12 @@
       background: #999;
       color: black;
     }
-    #historico {
-      margin-top: 30px;
-    }
-    #historico h2 {
-      color: #ccc;
-    }
-    #historico ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    #historico li {
-      margin: 5px 0;
-      font-size: 14px;
-    }
   </style>
 </head>
 <body>
   <h1>Buscador YouTube Amorim</h1>
   <div class="controls">
-    <input type="text" id="query" placeholder="Ex: lo-fi, música gospel, etc...">
+    <input type="text" id="query" placeholder="Ex: lo-fi, música gospel, etc..." />
     <select id="tipo">
       <option value="video">Vídeos</option>
       <option value="playlist">Playlists</option>
@@ -134,105 +119,94 @@
   </div>
 
   <div id="resultados" class="videos-grid"></div>
-  <button id="carregarMais" style="display: none;" onclick="carregarMais()">Carregar mais</button>
-
-  <div id="historico">
-    <h2>Downloads recentes:</h2>
-    <ul id="listaDownloads"></ul>
-  </div>
 
   <script>
     const API_KEY = 'AIzaSyCdYsIw8W9CyV2GF9w7a96eeIAMOyH5TxU';
-  let nextPageToken = '';
-  let ultimaBusca = '';
+    let nextPageToken = '';
+    let ultimaBusca = '';
 
-  function buscarVideos(reset = true) {
-    const query = document.getElementById('query').value.trim();
-    const tipo = document.getElementById('tipo').value;
-    const filtroData = document.getElementById('filtroData').value;
-    if (!query) return alert('Digite algo para buscar.');
+    function buscarVideos(reset = true) {
+      const query = document.getElementById('query').value.trim();
+      const tipo = document.getElementById('tipo').value;
+      const filtroData = document.getElementById('filtroData').value;
+      if (!query) return alert('Digite algo para buscar.');
 
-    if (reset) {
-      document.getElementById('resultados').innerHTML = '';
-      nextPageToken = '';
-    }
+      if (reset) {
+        document.getElementById('resultados').innerHTML = '';
+        nextPageToken = '';
+      }
 
-    ultimaBusca = query;
+      ultimaBusca = query;
 
-    let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${tipo}&maxResults=6&q=${encodeURIComponent(query)}&key=${API_KEY}`;
-    if (nextPageToken) url += `&pageToken=${nextPageToken}`;
-    if (filtroData) url += `&publishedAfter=${getFiltroDataISO(filtroData)}`;
+      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${tipo}&maxResults=6&q=${encodeURIComponent(query)}&key=${API_KEY}`;
+      if (nextPageToken) url += `&pageToken=${nextPageToken}`;
+      if (filtroData) url += `&publishedAfter=${getFiltroDataISO(filtroData)}`;
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const container = document.getElementById('resultados');
-        nextPageToken = data.nextPageToken || '';
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById('resultados');
+          nextPageToken = data.nextPageToken || '';
 
-        data.items.forEach(item => {
-          const id = tipo === 'video' ? item.id.videoId : item.id.playlistId;
-          const { title, description, thumbnails, publishedAt } = item.snippet;
-          const dataPublicacao = new Date(publishedAt).toLocaleDateString('pt-BR');
-          const link = tipo === 'video'
-            ? `https://www.youtube.com/watch?v=${id}`
-            : `https://www.youtube.com/playlist?list=${id}`;
+          data.items.forEach(item => {
+            const id = tipo === 'video' ? item.id.videoId : item.id.playlistId;
+            const { title, description, thumbnails, publishedAt } = item.snippet;
+            const dataPublicacao = new Date(publishedAt).toLocaleDateString('pt-BR');
+            const link = tipo === 'video'
+              ? `https://www.youtube.com/watch?v=${id}`
+              : `https://www.youtube.com/playlist?list=${id}`;
 
-          let botoesDownload = '';
-          if (tipo === 'video') {
-            botoesDownload = `
-              <div class="downloads">
-                <a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp4vtt" target="_blank">MP4</a>
-                <a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp3" target="_blank">MP3</a>
-                <a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=vtt" target="_blank">Legenda (VTT)</a>
+            let botoesDownload = '';
+            if (tipo === 'video') {
+              botoesDownload = `
+                <div class="downloads">
+                  <a href="https://web-production-b12a5.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp4vtt" target="_blank">MP4</a>
+                  <a href="https://web-production-b12a5.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp3" target="_blank">MP3</a>
+                  <a href="https://web-production-b12a5.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=vtt" target="_blank">Legenda (VTT)</a>
+                </div>
+              `;
+            }
 
+            container.innerHTML += `
+              <div class="video">
+                <a href="${link}" target="_blank">
+                  <img src="${thumbnails.medium.url}" alt="Thumbnail de ${title}">
+                </a>
+                <h3>${title}</h3>
+                <p><strong>Publicado:</strong> ${dataPublicacao}</p>
+                <p>${description || 'Sem descrição'}</p>
+                ${botoesDownload}
               </div>
             `;
-          }
-
-          container.innerHTML += `
-            <div class="video">
-              <a href="${link}" target="_blank">
-                <img src="${thumbnails.medium.url}" alt="Thumbnail de ${title}">
-              </a>
-              <h3>${title}</h3>
-              <p><strong>Publicado:</strong> ${dataPublicacao}</p>
-              <p>${description || 'Sem descrição'}</p>
-              ${botoesDownload}
-            </div>
-          `;
+          });
+        })
+        .catch(err => {
+          alert('Erro ao buscar vídeos. Verifique sua chave da API.');
+          console.error(err);
         });
-      })
-      .catch(err => {
-        alert('Erro ao buscar vídeos. Verifique sua chave da API.');
-        console.error(err);
-      });
-  }
-
-  function alternarModo() {
-    document.body.classList.toggle('light-mode');
-  }
-
-  function getFiltroDataISO(valor) {
-    const agora = new Date();
-    switch (valor) {
-      case 'hour': agora.setHours(agora.getHours() - 1); break;
-      case 'today': agora.setHours(0, 0, 0, 0); break;
-      case 'week': agora.setDate(agora.getDate() - 7); break;
-      case 'month': agora.setMonth(agora.getMonth() - 1); break;
-      case 'year': agora.setFullYear(agora.getFullYear() - 1); break;
     }
-    return agora.toISOString();
-  }
 
-  window.addEventListener('scroll', () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && nextPageToken) {
-      buscarVideos(false);
+    function alternarModo() {
+      document.body.classList.toggle('light-mode');
     }
-  });
+
+    function getFiltroDataISO(valor) {
+      const agora = new Date();
+      switch (valor) {
+        case 'hour': agora.setHours(agora.getHours() - 1); break;
+        case 'today': agora.setHours(0, 0, 0, 0); break;
+        case 'week': agora.setDate(agora.getDate() - 7); break;
+        case 'month': agora.setMonth(agora.getMonth() - 1); break;
+        case 'year': agora.setFullYear(agora.getFullYear() - 1); break;
+      }
+      return agora.toISOString();
+    }
+
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && nextPageToken) {
+        buscarVideos(false);
+      }
+    });
   </script>
 </body>
 </html>
-
-<a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp4vtt" target="_blank">MP4</a>
-<a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp3" target="_blank">MP3</a>
-<a href="https://yt-backend-production.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=vtt" target="_blank">Legenda (VTT)</a>
