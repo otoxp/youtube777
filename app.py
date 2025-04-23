@@ -19,7 +19,7 @@ def download():
 
     if format_type == 'mp4vtt':
         ydl_opts.update({
-            'format': 'bestvideo+bestaudio/best',
+            'format': 'best',
             'writesubtitles': True,
             'subtitleslangs': ['pt'],
             'subtitlesformat': 'vtt',
