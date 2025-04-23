@@ -23,9 +23,7 @@ def download():
             'writesubtitles': True,
             'subtitleslangs': ['pt'],
             'subtitlesformat': 'vtt',
-            'postprocessors': [{
-                'key': 'FFmpegVideoConvertor',
-                'preferedformat': 'mp4',
+            'preferedformat': 'mp4',
             }]
         })
     elif format_type == 'mp3':
