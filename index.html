@@ -2,17 +2,16 @@
 <html lang="pt-BR">
 
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- PWA -->
-<link rel="manifest" href="manifest.json" />
-<link rel="icon" type="image/png" sizes="192x192" href="icons/logo-192.png" />
-<link rel="apple-touch-icon" href="icons/logo-512.png" />
-<meta name="theme-color" content="#ff0000" />
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/logo-192.png" />
+  <link rel="apple-touch-icon" href="icons/logo-512.png" />
+  <meta name="theme-color" content="#ff0000" />
 
-    
-    <title>Buscador YouTube</title>
+  <title>Buscador YouTube</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -107,6 +106,7 @@
     }
   </style>
 </head>
+
 <body>
   <h1>Buscador YouTube Amorim</h1>
   <div class="controls">
@@ -216,6 +216,19 @@
         buscarVideos(false);
       }
     });
+
+    // Registra o Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(function(registration) {
+            console.log('Service Worker registrado com sucesso:', registration);
+          })
+          .catch(function(error) {
+            console.log('Falha ao registrar o Service Worker:', error);
+          });
+      });
+    }
   </script>
 </body>
 </html>
