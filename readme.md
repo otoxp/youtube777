@@ -1,4 +1,4 @@
-# YT-Morim 🎥🔻
+# YT-@Morim 🎥🔻
 
 Buscador YouTube com suporte a download via `yt-dlp`, acessível por navegador ou como PWA.
 
