@@ -11,7 +11,7 @@ Buscador YouTube com suporte a download via `yt-dlp`, acessível por navegador o
 
 ## Como usar
 
-1. Acesse: [https://youtube-me.io](https://youtube-me.io)
+1. Acesse: [https://youtube-me.io](https://otoxp.github.io/youtube-me.io)
 2. Pesquise um vídeo
 3. Clique para baixar o áudio
 
