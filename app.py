@@ -21,7 +21,7 @@ def download():
 
     if format_type == 'mp4vtt':
         ydl_opts.update({
-            'format': 'best',  # Baixa vídeo simples, sem juntar streams
+            'format': 'best',
             'writesubtitles': True,
             'subtitleslangs': ['pt'],
             'subtitlesformat': 'vtt',
@@ -50,7 +50,6 @@ def download():
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
 
-            # Corrige extensão final do arquivo
             if format_type == 'mp3':
                 filename = filename.rsplit('.', 1)[0] + '.mp3'
             elif format_type == 'vtt':
@@ -62,6 +61,3 @@ def download():
 
     except Exception as e:
         return f"Erro ao processar o download: {e}", 500
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
