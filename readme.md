@@ -25,4 +25,4 @@ Buscador YouTube com suporte a download via `yt-dlp`, acessível por navegador o
 
 ## Licença
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+Este projeto está licenciado sob a [GNU](LICENSE).
