@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -115,6 +114,7 @@
     <select id="tipo">
       <option value="video">Vídeos</option>
       <option value="playlist">Playlists</option>
+      <option value="shorts">Shorts</option>
     </select>
     <select id="filtroData">
       <option value="">Qualquer data</option>
@@ -148,7 +148,10 @@
 
       ultimaBusca = query;
 
-      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${tipo}&maxResults=6&q=${encodeURIComponent(query)}&key=${API_KEY}`;
+      let tipoBusca = tipo === 'shorts' ? 'video' : tipo;
+      let queryBusca = tipo === 'shorts' ? `${query} #shorts` : query;
+
+      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${tipoBusca}&maxResults=6&q=${encodeURIComponent(queryBusca)}&key=${API_KEY}`;
       if (nextPageToken) url += `&pageToken=${nextPageToken}`;
       if (filtroData) url += `&publishedAfter=${getFiltroDataISO(filtroData)}`;
 
@@ -159,15 +162,15 @@
           nextPageToken = data.nextPageToken || '';
 
           data.items.forEach(item => {
-            const id = tipo === 'video' ? item.id.videoId : item.id.playlistId;
+            const id = tipoBusca === 'video' ? item.id.videoId : item.id.playlistId;
             const { title, description, thumbnails, publishedAt } = item.snippet;
             const dataPublicacao = new Date(publishedAt).toLocaleDateString('pt-BR');
-            const link = tipo === 'video'
+            const link = tipoBusca === 'video'
               ? `https://www.youtube.com/watch?v=${id}`
               : `https://www.youtube.com/playlist?list=${id}`;
 
             let botoesDownload = '';
-            if (tipo === 'video') {
+            if (tipoBusca === 'video') {
               botoesDownload = `
                 <div class="downloads">
                   <a href="https://web-production-b12a5.up.railway.app/download?url=https://www.youtube.com/watch?v=${id}&format=mp4vtt" target="_blank">MP4</a>
@@ -218,7 +221,6 @@
       }
     });
 
-    // Registra o Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/service-worker.js')
