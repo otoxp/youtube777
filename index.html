@@ -151,7 +151,7 @@
       let tipoBusca = tipo === 'shorts' ? 'video' : tipo;
       let queryBusca = tipo === 'shorts' ? `${query} #shorts` : query;
 
-      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${tipoBusca}&maxResults=8&q=${encodeURIComponent(queryBusca)}&key=${API_KEY}`;
+      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${tipoBusca}&maxResults=168&q=${encodeURIComponent(queryBusca)}&key=${API_KEY}`;
       if (nextPageToken) url += `&pageToken=${nextPageToken}`;
       if (filtroData) url += `&publishedAfter=${getFiltroDataISO(filtroData)}`;
 
