@@ -110,11 +110,12 @@
 <body>
   <h1>Buscador YouTube Amorim</h1>
   <div class="controls">
-    <input type="text" id="query" placeholder="Ex: lo-fi, música gospel, etc..." />
+    <input type="text" id="query" placeholder="Ex: lo-fi, música gospel, tech, etc..." />
     <select id="tipo">
       <option value="video">Vídeos</option>
       <option value="playlist">Playlists</option>
       <option value="shorts">Shorts</option>
+      <option value="channel">Canais</option> <!-- NOVO -->
     </select>
     <select id="filtroData">
       <option value="">Qualquer data</option>
@@ -148,8 +149,18 @@
 
       ultimaBusca = query;
 
-      let tipoBusca = tipo === 'shorts' ? 'video' : tipo;
-      let queryBusca = tipo === 'shorts' ? `${query} #shorts` : query;
+      let tipoBusca;
+      let queryBusca = query;
+
+      if (tipo === 'shorts') {
+        tipoBusca = 'video';
+        queryBusca = `${query} #shorts`;
+      } else if (tipo === 'channel') {
+        tipoBusca = 'channel';
+        queryBusca = `${query}`;
+      } else {
+        tipoBusca = tipo;
+      }
 
       let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${tipoBusca}&maxResults=168&q=${encodeURIComponent(queryBusca)}&key=${API_KEY}`;
       if (nextPageToken) url += `&pageToken=${nextPageToken}`;
@@ -162,12 +173,20 @@
           nextPageToken = data.nextPageToken || '';
 
           data.items.forEach(item => {
-            const id = tipoBusca === 'video' ? item.id.videoId : item.id.playlistId;
+            let id, link;
             const { title, description, thumbnails, publishedAt } = item.snippet;
-            const dataPublicacao = new Date(publishedAt).toLocaleDateString('pt-BR');
-            const link = tipoBusca === 'video'
-              ? `https://www.youtube.com/watch?v=${id}`
-              : `https://www.youtube.com/playlist?list=${id}`;
+            const dataPublicacao = publishedAt ? new Date(publishedAt).toLocaleDateString('pt-BR') : "—";
+
+            if (tipoBusca === 'video') {
+              id = item.id.videoId;
+              link = `https://www.youtube.com/watch?v=${id}`;
+            } else if (tipoBusca === 'playlist') {
+              id = item.id.playlistId;
+              link = `https://www.youtube.com/playlist?list=${id}`;
+            } else if (tipoBusca === 'channel') {
+              id = item.id.channelId;
+              link = `https://www.youtube.com/channel/${id}`;
+            }
 
             let botoesDownload = '';
             if (tipoBusca === 'video') {
